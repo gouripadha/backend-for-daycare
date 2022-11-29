@@ -211,4 +211,58 @@ app.post("/createuser", (req, res) => {
     }
   );
 });
+
+app.get("/children", (req, res) => {
+  db.query("SELECT * FROM children", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.delete("/deletechild/:child_id", (req, res) => {
+  const child_id = req.params.child_id;
+  db.query(
+    "DELETE FROM children WHERE child_id  = ?",
+    child_id,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get("/userteachers/:age", (req, res) => {
+  const age = req.params.age;
+
+  db.query("SELECT * FROM children WHERE age = ?", age, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+// create an api for login
+app.post("/login", (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  // console.log(email);
+  // console.log(password);
+  // console.log("hello");
+  db.query("SELECT login(?,?) as value", [email, password], (err, result) => {
+    if (err) {
+      res.send({ message: "Wrong email/password combination!" });
+      console.log(err);
+    } else {
+      // console.log(result[0].value);
+      res.send(result[0]);
+    }
+  });
+});
 app.listen(3001);
