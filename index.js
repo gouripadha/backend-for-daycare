@@ -187,4 +187,28 @@ app.delete("/deletecaregiver/:caregiver_id", (req, res) => {
   );
 });
 
+app.post("/createuser", (req, res) => {
+  const ChildName = req.body.ChildName;
+  const ParentName = req.body.ParentName;
+  const MedicalHistory = req.body.MedicalHistory;
+  const Age = req.body.Age;
+  const Email = req.body.Email;
+  const Password = req.body.Password;
+  const Contact = req.body.Contact;
+
+  db.query(
+    "INSERT INTO children (child_name, parent_name, medical_history, age, email, password, contact) VALUES (?,?,?,?,?,?,?)",
+    [ChildName, ParentName, MedicalHistory, Age, Email, Password, Contact],
+    (err, result) => {
+      if (err) {
+        return res.status(400).send({
+          message: "Inavlid Inputs",
+        });
+      } else {
+        console.log(result);
+        res.send("Values inserted");
+      }
+    }
+  );
+});
 app.listen(3001);
