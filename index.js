@@ -252,9 +252,7 @@ app.get("/userteachers/:age", (req, res) => {
 app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  // console.log(email);
-  // console.log(password);
-  // console.log("hello");
+  
   db.query("SELECT login(?,?) as value", [email, password], (err, result) => {
     if (err) {
       res.send({ message: "Wrong email/password combination!" });
@@ -265,4 +263,5 @@ app.post("/login", (req, res) => {
     }
   });
 });
+
 app.listen(3001);
