@@ -294,6 +294,25 @@ app.put("/updateuser", (req, res) => {
       if (err) {
         console.log(err);
       } else {
+        console.log(result);
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.put("/bookcaregiver", (req, res) => {
+  caregiver_id = req.body.caregiver_id;
+  email = req.body.email;
+
+  db.query(
+    "UPDATE children SET cid = ? WHERE email = ?",
+    [caregiver_id, email],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(result);
         res.send(result);
       }
     }
