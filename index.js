@@ -85,6 +85,23 @@ app.get("/teachers", (req, res) => {
   });
 });
 
+app.get("/userteachers/:email", (req, res) => {
+  const email = req.params.email;
+
+  db.query(
+    "SELECT T.teacher_name, T.qualifications , T.subject FROM teachers AS T, children AS C where C.email = ? AND yeartoage(C.year) = T.age_group",
+    email,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(result);
+        res.send(result);
+      }
+    }
+  );
+});
+
 app.delete("/deleteteacher/:teacher_id", (req, res) => {
   const teacher_id = req.params.teacher_id;
   db.query(
@@ -191,14 +208,14 @@ app.post("/createuser", (req, res) => {
   const ChildName = req.body.ChildName;
   const ParentName = req.body.ParentName;
   const MedicalHistory = req.body.MedicalHistory;
-  const Age = req.body.Age;
+  const Year = req.body.Year;
   const Email = req.body.Email;
   const Password = req.body.Password;
   const Contact = req.body.Contact;
 
   db.query(
-    "INSERT INTO children (child_name, parent_name, medical_history, age, email, password, contact) VALUES (?,?,?,?,?,?,?)",
-    [ChildName, ParentName, MedicalHistory, Age, Email, Password, Contact],
+    "INSERT INTO children (child_name, parent_name, medical_history, year, email, password, contact) VALUES (?,?,?,?,?,?,?)",
+    [ChildName, ParentName, MedicalHistory, Year, Email, Password, Contact],
     (err, result) => {
       if (err) {
         return res.status(400).send({
@@ -206,7 +223,6 @@ app.post("/createuser", (req, res) => {
         });
       } else {
         console.log(result);
-        res.send("Values inserted");
       }
     }
   );
@@ -237,22 +253,11 @@ app.delete("/deletechild/:child_id", (req, res) => {
   );
 });
 
-app.get("/userteachers/:age", (req, res) => {
-  const age = req.params.age;
-
-  db.query("SELECT * FROM children WHERE age = ?", age, (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
-    }
-  });
-});
 // create an api for login
 app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  
+
   db.query("SELECT login(?,?) as value", [email, password], (err, result) => {
     if (err) {
       res.send({ message: "Wrong email/password combination!" });
