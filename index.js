@@ -278,4 +278,25 @@ app.post("/login", (req, res) => {
   });
 });
 
+app.put("/updateuser", (req, res) => {
+  const ChildName = req.body.ChildName;
+  const ParentName = req.body.ParentName;
+  const MedicalHistory = req.body.MedicalHistory;
+  const Year = req.body.Year;
+  const Email = req.body.Email;
+
+  const Contact = req.body.Contact;
+
+  db.query(
+    "UPDATE children SET child_name = ?, parent_name = ?, medical_history = ?, year = ?, contact = ? WHERE email = ?",
+    [ChildName, ParentName, MedicalHistory, Year, Contact, Email],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
 app.listen(3001);
