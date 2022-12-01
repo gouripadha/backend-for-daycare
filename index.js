@@ -208,6 +208,21 @@ app.get("/usercaregiver/:email", (req, res) => {
   );
 });
 
+app.get("/yourdoctor/:email", (req, res) => {
+  const email = req.params.email;
+  db.query(
+    "SELECT * FROM doctors, children C WHERE C.email = ? AND C.did = doctors.doctor_id",
+    email,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
 app.delete("/deletecaregiver/:caregiver_id", (req, res) => {
   const caregiver_id = req.params.caregiver_id;
   db.query(
@@ -338,6 +353,24 @@ app.put("/bookcaregiver", (req, res) => {
   db.query(
     "UPDATE children SET cid = ? WHERE email = ?",
     [caregiver_id, email],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(result);
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.put("/bookdoctor", (req, res) => {
+  doctor_id = req.body.doctor_id;
+  email = req.body.email;
+
+  db.query(
+    "UPDATE children SET did = ? WHERE email = ?",
+    [doctor_id, email],
     (err, result) => {
       if (err) {
         console.log(err);
