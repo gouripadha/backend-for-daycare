@@ -45,6 +45,21 @@ app.get("/activities", (req, res) => {
   });
 });
 
+app.get("/useractivities/:email", (req, res) => {
+  const email = req.params.email;
+  db.query(
+    "SELECT * FROM dailyactivities A , teachers T, children C where C.email = ? AND T.age_group =  yeartoage(C.year) AND T.aid = A.activity_id ",
+    email,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
 app.delete("/deleteactivity/:activity_id", (req, res) => {
   const activity_id = req.params.activity_id;
   db.query(
@@ -65,10 +80,11 @@ app.post("/createteacher", (req, res) => {
   const Qualification = req.body.Qualification;
   const Subject = req.body.Subject;
   const AgeGroup = req.body.AgeGroup;
+  const Aid = req.body.Aid;
 
   db.query(
-    "INSERT INTO teachers (teacher_name, qualifications, subject, age_group) VALUES (?,?,?,?)",
-    [TeacherName, Qualification, Subject, AgeGroup],
+    "INSERT INTO teachers (teacher_name, qualifications, subject, age_group , aid) VALUES (?,?,?,?,?)",
+    [TeacherName, Qualification, Subject, AgeGroup, Aid],
     (err, result) => {
       if (err) {
         console.log(err);
