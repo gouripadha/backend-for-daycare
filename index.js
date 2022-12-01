@@ -238,19 +238,26 @@ app.get("/children", (req, res) => {
   });
 });
 
-app.delete("/deletechild/:child_id", (req, res) => {
-  const child_id = req.params.child_id;
-  db.query(
-    "DELETE FROM children WHERE child_id  = ?",
-    child_id,
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
+app.get("/profile/:email", (req, res) => {
+  const email = req.params.email;
+  db.query("SELECT * FROM children WHERE email = ? ", email, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
     }
-  );
+  });
+});
+
+app.delete("/deletechild/:email", (req, res) => {
+  const email = req.params.email;
+  db.query("DELETE FROM children WHERE child_id  = ?", email, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
 });
 
 // create an api for login
