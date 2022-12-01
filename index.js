@@ -193,6 +193,21 @@ app.get("/caregivers", (req, res) => {
   });
 });
 
+app.get("/usercaregiver/:email", (req, res) => {
+  const email = req.params.email;
+  db.query(
+    "SELECT * FROM caregivers, children C WHERE C.email = ? AND C.cid = caregivers.caregiver_id",
+    email,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
 app.delete("/deletecaregiver/:caregiver_id", (req, res) => {
   const caregiver_id = req.params.caregiver_id;
   db.query(
