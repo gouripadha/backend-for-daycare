@@ -3,6 +3,9 @@ const app = express();
 const mysql = require("mysql");
 const cors = require("cors");
 const { response } = require("express");
+// import dotenv
+const env = require("dotenv");
+env.config();
 
 app.use(cors());
 app.use(express.json());
@@ -276,6 +279,19 @@ app.post("/login", (req, res) => {
       res.send(result[0]);
     }
   });
+});
+
+app.post("/adminlogin", (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  console.log(email);
+  console.log(password);
+
+  if (email === process.env.ADMINID && password === process.env.ADMINPASSWORD) {
+    res.send({ val: 1 });
+  } else {
+    res.send({ val: 0 });
+  }
 });
 
 app.put("/updateuser", (req, res) => {
