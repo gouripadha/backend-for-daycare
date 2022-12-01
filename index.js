@@ -279,13 +279,12 @@ app.post("/login", (req, res) => {
 });
 
 app.put("/updateuser", (req, res) => {
-  const ChildName = req.body.ChildName;
-  const ParentName = req.body.ParentName;
-  const MedicalHistory = req.body.MedicalHistory;
-  const Year = req.body.Year;
-  const Email = req.body.Email;
-
-  const Contact = req.body.Contact;
+  const ChildName = req.body.child_name;
+  const ParentName = req.body.parent_name;
+  const MedicalHistory = req.body.medical_history;
+  const Year = req.body.year;
+  const Email = req.body.email;
+  const Contact = req.body.contact;
 
   db.query(
     "UPDATE children SET child_name = ?, parent_name = ?, medical_history = ?, year = ?, contact = ? WHERE email = ?",
